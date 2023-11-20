@@ -1,4 +1,5 @@
-﻿using System.Net.NetworkInformation;
+﻿using System;
+using System.Net.NetworkInformation;
 
 namespace QuickSort_InCSharp
 {
@@ -6,19 +7,39 @@ namespace QuickSort_InCSharp
     {
         public static Random rn;
         public static int opc;
-
+        
         static void Main(string[] args)
         {
-            int[] arreglo = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
+            int[] arreglo_1 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
+            int[] arreglo_2 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
+            int[] arreglo_3 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
             rn = new Random();
 
-            opc = int.Parse(Console.ReadLine());
-
-            QuickSort(ref arreglo, 0, arreglo.Length - 1);
-            foreach (int i in arreglo)
+            opc = 1;
+            QuickSort(ref arreglo_1, 0, arreglo_1.Length - 1);
+            foreach (int i in arreglo_1)
             {
-                Console.WriteLine(i);
+                Console.Write(" " + i);
             }
+            Console.WriteLine();
+
+            opc = 2;
+            Console.WriteLine("\n Pivote central");
+            QuickSort(ref arreglo_2, 0, arreglo_2.Length - 1);
+            foreach (int i in arreglo_2)
+            {
+                Console.Write(" " + i);
+            }
+            Console.WriteLine();
+
+            opc = 3;
+            Console.WriteLine("\n Pivote final");
+            QuickSort(ref arreglo_3, 0, arreglo_3.Length - 1);
+            foreach (int i in arreglo_3)
+            {
+                Console.Write(" " + i);
+            }
+            Console.ReadKey();
         }
 
         public static void Swap(ref int x, ref int y)
@@ -38,7 +59,7 @@ namespace QuickSort_InCSharp
                     break;
 
                 case 2:
-                    pivot_index = mayor % 2 > 0 ? Math.Abs(mayor / 2 + 1) : mayor / 2;
+                    pivot_index = (int)Math.Floor((double)(mayor + menor) / 2);
                     break;
 
                 case 3:
@@ -53,7 +74,7 @@ namespace QuickSort_InCSharp
             Swap(ref arreglo[menor], ref arreglo[pivot_index]);
 
             int pivot = arreglo[menor];
-            int izq = menor;
+            int izq = menor + 1;
             int der = mayor;
 
             while (true)
@@ -68,12 +89,16 @@ namespace QuickSort_InCSharp
                     der -= 1;
                 }
 
-                if (izq > der)
+                if (izq <= der)
+                {
+                    Swap(ref arreglo[izq], ref arreglo[der]);
+                    izq += 1;
+                    der -= 1;
+                }
+                else
                 {
                     break;
                 }
-
-                Swap(ref arreglo[izq], ref arreglo[der]);
             }
             Swap(ref arreglo[menor], ref arreglo[der]);
             return der;
