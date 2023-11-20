@@ -16,6 +16,7 @@ namespace QuickSort_InCSharp
             rn = new Random();
 
             opc = 1;
+            Console.WriteLine("\n Pivote inicial");
             QuickSort(ref arreglo_1, 0, arreglo_1.Length - 1);
             foreach (int i in arreglo_1)
             {
