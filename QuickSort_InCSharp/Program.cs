@@ -13,6 +13,7 @@ namespace QuickSort_InCSharp
             int[] arreglo_1 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
             int[] arreglo_2 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
             int[] arreglo_3 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
+            int[] arreglo_4 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
             rn = new Random();
 
             opc = 1;
@@ -37,6 +38,15 @@ namespace QuickSort_InCSharp
             Console.WriteLine("\n Pivote final");
             QuickSort(ref arreglo_3, 0, arreglo_3.Length - 1);
             foreach (int i in arreglo_3)
+            {
+                Console.Write(" " + i);
+            }
+            Console.WriteLine();
+
+            opc = 343454;
+            Console.WriteLine("\n Pivote aleatorio");
+            QuickSort(ref arreglo_4, 0, arreglo_4.Length - 1);
+            foreach (int i in arreglo_4)
             {
                 Console.Write(" " + i);
             }
