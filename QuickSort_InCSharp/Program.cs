@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.NetworkInformation;
+using System.Reflection;
+using System.Xml.Linq;
 
 namespace QuickSort_InCSharp
 {
@@ -25,25 +27,49 @@ namespace QuickSort_InCSharp
 
             opc = 1;
             contador_Intercambios = 1;
-            int[] nV = GenerarVector(-10,  10);
+
+            //int[] nV = GenerarVector(-10,  10);
+            //seleccion(AbandonedM)
+
             Console.WriteLine("\n Pivote inicial");
             Imprimir(ref arreglo_1);
             Console.ReadKey();
+            Console.Clear();
 
             opc = 2;
             Console.WriteLine("\n Pivote central");
             Imprimir(ref arreglo_2);
             Console.ReadKey();
+            Console.Clear();
 
             opc = 3;
             Console.WriteLine("\n Pivote final");
             Imprimir(ref arreglo_3);
             Console.ReadKey();
+            Console.Clear();
 
             opc = 343454;
             Console.WriteLine("\n Pivote aleatorio");
             Imprimir(ref arreglo_4);
             Console.ReadKey();
+        }
+
+        public static void seleccion(ref int[] a, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                // Buscamos la posicion del minimo en a[i], a[i+1], ..., a[n-1]
+                int k = i;
+                for (int j = i + 1; j < n; j++)
+                {
+                    if (a[j] < a[k])
+                        k = j;
+                }
+                // intercambiamos a[i] con a[k]
+                int aux = a[i];
+                a[i] = a[k];
+                a[k] = aux;
+            }
         }
 
         public static void Swap(ref int x, ref int y)
@@ -75,10 +101,9 @@ namespace QuickSort_InCSharp
                     pivot_index = rn.Next(menor, mayor);
                     break;
             }
-            Console.WriteLine("Partición: " + contador_Particiones);
-            Console.WriteLine("Intercambio: " + contador_Intercambios);
             Swap(ref arreglo[menor], ref arreglo[pivot_index]);
-            PrintSwap(ref arreglo, menor, mayor);
+            /*rintSwap(ref arreglo);*/
+            PrintSwap(ref arreglo, menor , pivot_index);
             contador_Intercambios++;
 
             int pivot = arreglo[menor];
@@ -99,11 +124,8 @@ namespace QuickSort_InCSharp
 
                 if (izq <= der)
                 {
-                    Console.WriteLine("Partición: " + contador_Particiones);
-                    Console.WriteLine("Intercambio: " + contador_Intercambios);
                     Swap(ref arreglo[izq], ref arreglo[der]);
-                    Console.WriteLine();
-                    PrintSwap(ref arreglo, menor, mayor);
+                    PrintSwap(ref arreglo, izq, der);
                     contador_Intercambios++;
                     izq += 1;
                     der -= 1;
@@ -113,10 +135,9 @@ namespace QuickSort_InCSharp
                     break;
                 }
             }
-            Console.WriteLine("Partición: " + contador_Particiones);
-            Console.WriteLine("Intercambi: " + contador_Intercambios);
+
             Swap(ref arreglo[menor], ref arreglo[der]);
-            PrintSwap(ref arreglo, menor, mayor);;
+            PrintSwap(ref arreglo, menor, der);;
             contador_Intercambios++;
             return der;
         }
@@ -148,23 +169,37 @@ namespace QuickSort_InCSharp
 
         public static void PrintSwap(ref int[] arr, int izq, int der)
         {
-            Console.Write("[");
-
-            for (int i = izq; i <= der; i++)
+            Console.Write("[ ");
+            for (int i = 0; i < arr.Length; i++)
             {
-                Console.Write(arr[i]);
-                if (i < der)
+                if (i == izq || i == der)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(arr[i]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write(arr[i]);
+                }
+
+                if (i < arr.Length - 1)
                 {
                     Console.Write(", ");
                 }
             }
+            Console.Write(" ]");
 
+            // el espaciado no me convence del todo, pero lo dejo para que tu decidas si se queda o se va
+            Console.WriteLine("\n");
+        }
+
+        public static void PrintSwap(ref int[] arr)
+        {
+            Console.Write("[");
+            Console.Write(string.Join(", ", arr));
             Console.Write("]\n");
             Console.WriteLine();
-            //Console.Write("[");
-            //Console.Write(string.Join(", ", arr));
-            //Console.Write("]\n");
-            //Console.WriteLine();
         }
 
         public static int[] GenerarVector(int menor = 0, int longitud = 10)
