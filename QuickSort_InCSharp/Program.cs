@@ -3,53 +3,46 @@ using System.Net.NetworkInformation;
 
 namespace QuickSort_InCSharp
 {
+
     internal class Program
     {
         public static Random rn;
         public static int opc;
-        
+        public static int contador_Intercambios;
+        public static int contador_Particiones;
+        public static int contador_Recursiones;
+        public static int[] arreglo_1 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
+        public static int[] arreglo_2 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
+        public static int[] arreglo_3 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
+        public static int[] arreglo_4 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
+
         static void Main(string[] args)
         {
-            int[] arreglo_1 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
-            int[] arreglo_2 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
-            int[] arreglo_3 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
-            int[] arreglo_4 = { 4, 8, -3, 10, -7, -9, 2, -5, 6, 1 };
             rn = new Random();
+            //int[] nm = GenerarVector(-10, 10);
+            //Console.WriteLine(string.Join(", ", nm));
+            //Console.ReadKey();
 
             opc = 1;
+            contador_Intercambios = 1;
+            int[] nV = GenerarVector(-10,  10);
             Console.WriteLine("\n Pivote inicial");
-            QuickSort(ref arreglo_1, 0, arreglo_1.Length - 1);
-            foreach (int i in arreglo_1)
-            {
-                Console.Write(" " + i);
-            }
-            Console.WriteLine();
+            Imprimir(ref arreglo_1);
+            Console.ReadKey();
 
             opc = 2;
             Console.WriteLine("\n Pivote central");
-            QuickSort(ref arreglo_2, 0, arreglo_2.Length - 1);
-            foreach (int i in arreglo_2)
-            {
-                Console.Write(" " + i);
-            }
-            Console.WriteLine();
+            Imprimir(ref arreglo_2);
+            Console.ReadKey();
 
             opc = 3;
             Console.WriteLine("\n Pivote final");
-            QuickSort(ref arreglo_3, 0, arreglo_3.Length - 1);
-            foreach (int i in arreglo_3)
-            {
-                Console.Write(" " + i);
-            }
-            Console.WriteLine();
+            Imprimir(ref arreglo_3);
+            Console.ReadKey();
 
             opc = 343454;
             Console.WriteLine("\n Pivote aleatorio");
-            QuickSort(ref arreglo_4, 0, arreglo_4.Length - 1);
-            foreach (int i in arreglo_4)
-            {
-                Console.Write(" " + i);
-            }
+            Imprimir(ref arreglo_4);
             Console.ReadKey();
         }
 
@@ -62,6 +55,7 @@ namespace QuickSort_InCSharp
 
         public static int Partition(ref int[] arreglo, int menor, int mayor)
         {
+            contador_Particiones++;
             int pivot_index;
             switch (opc)
             {
@@ -81,13 +75,16 @@ namespace QuickSort_InCSharp
                     pivot_index = rn.Next(menor, mayor);
                     break;
             }
-
+            Console.WriteLine("Partición: " + contador_Particiones);
+            Console.WriteLine("Intercambio: " + contador_Intercambios);
             Swap(ref arreglo[menor], ref arreglo[pivot_index]);
+            PrintSwap(ref arreglo, menor, mayor);
+            contador_Intercambios++;
 
             int pivot = arreglo[menor];
             int izq = menor + 1;
             int der = mayor;
-
+            
             while (true)
             {
                 while (izq <= der && arreglo[izq] <= pivot)
@@ -102,7 +99,12 @@ namespace QuickSort_InCSharp
 
                 if (izq <= der)
                 {
+                    Console.WriteLine("Partición: " + contador_Particiones);
+                    Console.WriteLine("Intercambio: " + contador_Intercambios);
                     Swap(ref arreglo[izq], ref arreglo[der]);
+                    Console.WriteLine();
+                    PrintSwap(ref arreglo, menor, mayor);
+                    contador_Intercambios++;
                     izq += 1;
                     der -= 1;
                 }
@@ -111,7 +113,11 @@ namespace QuickSort_InCSharp
                     break;
                 }
             }
+            Console.WriteLine("Partición: " + contador_Particiones);
+            Console.WriteLine("Intercambi: " + contador_Intercambios);
             Swap(ref arreglo[menor], ref arreglo[der]);
+            PrintSwap(ref arreglo, menor, mayor);;
+            contador_Intercambios++;
             return der;
         }
 
@@ -119,11 +125,65 @@ namespace QuickSort_InCSharp
         {
             if (menor < mayor)
             {
+                contador_Recursiones++;
                 int pivot = Partition(ref arreglo, menor, mayor);
 
                 QuickSort(ref arreglo, menor, pivot - 1);
                 QuickSort(ref arreglo, pivot + 1, mayor);
             }
+        }
+
+        public static void Imprimir(ref int[] arr)
+        {
+            QuickSort(ref arr, 0, arr.Length - 1);
+            foreach (int i in arr)
+            {
+                Console.Write(" " + i);
+            }
+            Console.WriteLine();
+            contador_Intercambios = 0;
+            contador_Particiones = 0;
+            contador_Recursiones = 0;
+        }
+
+        public static void PrintSwap(ref int[] arr, int izq, int der)
+        {
+            Console.Write("[");
+
+            for (int i = izq; i <= der; i++)
+            {
+                Console.Write(arr[i]);
+                if (i < der)
+                {
+                    Console.Write(", ");
+                }
+            }
+
+            Console.Write("]\n");
+            Console.WriteLine();
+            //Console.Write("[");
+            //Console.Write(string.Join(", ", arr));
+            //Console.Write("]\n");
+            //Console.WriteLine();
+        }
+
+        public static int[] GenerarVector(int menor = 0, int longitud = 10)
+        {
+            List<int> list = new List<int>();
+
+            for (int i = menor; i < longitud; i++) 
+            {
+                int nuevoValor = rn.Next(menor, longitud + 1);
+                if (list.Contains(nuevoValor))
+                {
+                    i--;
+                    continue;
+                }
+
+                list.Add(nuevoValor);
+            }
+
+            return list.ToArray();
         }
     }
 }
